@@ -11,7 +11,8 @@
 //
 // If you no longer want to use a dependency, remember
 // to also remove its path from "config.paths.watched".
-import "phoenix_html"
+import "phoenix_html";
+import "bootstrap";
 
 // Import local files
 //
@@ -19,3 +20,18 @@ import "phoenix_html"
 // paths "./socket" or full ones "web/static/js/socket".
 
 // import socket from "./socket"
+import Layout from "./components/layout";
+import React from 'react'
+import ReactDOM from 'react-dom';
+import {Provider} from 'react-redux';
+import {createStore} from 'redux';
+const root = document.getElementById("root");
+
+const store = createStore(() => {})
+
+ReactDOM.render(
+  <Provider store={store}>
+    <Layout />
+  </Provider>,
+  root
+);

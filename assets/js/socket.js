@@ -42,7 +42,7 @@ let socket = new Socket("/socket", {params: {token: window.userToken}})
 //       # max_age: 1209600 is equivalent to two weeks in seconds
 //       case Phoenix.Token.verify(socket, "user socket", token, max_age: 1209600) do
 //         {:ok, user_id} ->
-//           {:ok, assign(socket, :user, user_id)}
+
 //         {:error, reason} ->
 //           :error
 //       end
@@ -51,7 +51,7 @@ let socket = new Socket("/socket", {params: {token: window.userToken}})
 // Finally, pass the token on connect as below. Or remove it
 // from connect if you don't care about authentication.
 
-socket.connect()
+/*socket.connect()
 
 // Now that you are connected, you can join channels with a topic:
 let channel = socket.channel("topic:subtopic", {})
@@ -60,3 +60,4 @@ channel.join()
   .receive("error", resp => { console.log("Unable to join", resp) })
 
 export default socket
+*/
