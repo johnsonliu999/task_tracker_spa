@@ -4,6 +4,7 @@ defmodule TaskTrackerSpa.Account do
   """
 
   import Ecto.Query, warn: false
+  import Ecto.Changeset
   alias TaskTrackerSpa.Repo
 
   alias TaskTrackerSpa.Account.User
@@ -52,6 +53,7 @@ defmodule TaskTrackerSpa.Account do
   def create_user(attrs \\ %{}) do
     %User{}
     |> User.changeset(attrs)
+    |> put_change(:password_hash, Comeonin.Argon2.hashpwsalt(attrs["password"]))
     |> Repo.insert()
   end
 
