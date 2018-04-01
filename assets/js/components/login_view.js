@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Row, Col, Form, FormGroup, Label, Input, Button} from 'reactstrap'
 import {Redirect} from 'react-router-dom';
+import {connect} from 'react-redux'
 import {LOGIN_SUCCEED} from '../actions'
 import store from '../store'
 
@@ -40,7 +41,7 @@ class LoginView extends Component {
   }
 
   render() {
-    if (store.getState().user.token)
+    if (this.props.token)
       return <Redirect to={"/tasks"} />
 
     return (
@@ -78,4 +79,4 @@ class LoginView extends Component {
   }
 };
 
-export default LoginView;
+export default connect(state => ({token: state.user.token}))(LoginView);

@@ -6,6 +6,7 @@ class Server {
     const url = "/api/v1/tasks?token=" + token;
     $.ajax(url, {
       method: "get",
+      data: {token},
       dataType: "json",
       contentType: "application/json; charset=UTF-8",
       success: (resp) => {

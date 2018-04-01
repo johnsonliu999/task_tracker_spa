@@ -3,7 +3,7 @@ defmodule TaskTrackerSpaWeb.Router do
   alias TaskTrackerSpa.Repo
 
   def authenticate(%{halted: true} = conn, _), do: conn
-  def authenticate(conn, %{"token" => token}) do
+  def authenticate(conn, %{"token" => token} = params) do
     res = Phoenix.Token.verify(conn, "auth token", token, max_age: 86400)
     case res do
       {:ok, user_id} -> assign(conn, :user_id, user_id)
@@ -15,7 +15,8 @@ defmodule TaskTrackerSpaWeb.Router do
   end
 
   # TODO error
-  def authenticate(conn, _) do
+  def authenticate(conn, param) do
+    IO.inspect param, label: "param"
     conn
     |> send_resp(403, "unauthorized")
     |> halt()
