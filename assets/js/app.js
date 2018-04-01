@@ -24,14 +24,11 @@ import Layout from "./components/layout";
 import React from 'react'
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
-import {createStore} from 'redux';
-const root = document.getElementById("root");
-
-const store = createStore(() => {})
+import store from './store'
 
 ReactDOM.render(
   <Provider store={store}>
     <Layout />
   </Provider>,
-  root
+  document.getElementById("root")
 );

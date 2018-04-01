@@ -1,54 +1,66 @@
-import React from 'react';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {Container, Row, Col, Card, CardHeader, CardBody, CardFooter, Table, Button} from 'reactstrap'
+import api from '../api'
 
 const Task = ({task}) => (
   <Card>
     <CardHeader>{task.title}</CardHeader>
     <CardBody>
-      <Table>
-        <tr>
-          <th scope="row">Title</th>
-          <td>{task.title}</td>
-        </tr>
-        <tr>
-          <th scope="row">Description</th>
-          <td>{task.desc}</td>
-        </tr>
-        <tr>
-          <th scope="row">Time</th>
-          <td>{task.time}</td>
-        </tr>
-        <tr>
-          <th scope="row">Statue</th>
-          <td>{task.done}</td>
-        </tr>
+      <Table responsive>
+        <tbody>
+          <tr>
+            <th scope="row">Title</th>
+            <td>{task.title}</td>
+          </tr>
+          <tr>
+            <th scope="row">Description</th>
+            <td>{task.desc}</td>
+          </tr>
+          <tr>
+            <th scope="row">Time</th>
+            <td>{task.time}</td>
+          </tr>
+          <tr>
+            <th scope="row">Statue</th>
+            <td>{task.done}</td>
+          </tr>
+        </tbody>
       </Table>
     </CardBody>
     <CardFooter>
       <Row>
-        <Col sm={{size: 3, offset: 2}}>
+        <Col lg={{size: 3, offset: 2}}>
           <Button color="primary">Edit</Button>
         </Col>
-        <Col sm={{size: 3, offset: 2}}>
+        <Col lg={{size: 3, offset: 2}}>
           <Button color="danger">Delete</Button>
         </Col>
+        <Col lg="2"></Col>
       </Row>
     </CardFooter>
   </Card>
 );
 
-const TasksView = ({tasks}) => {
+class TasksView extends Component {
 
-  const taskCars = tasks.map(task => (
-    <Col sm="3"><Task task={task}/></Col>
-  ));
+  componentDidMount() {
+    api.request_tasks();
+  }
 
-  return (
-    <Container>
-      <Row>
-        {tasksCards}
-      </Row>
-    </Container>
-  );
+  render() {
+    const tasksCards = this.props.tasks.map(task => (
+      <Col md="4" key={task.id}><Task task={task}/></Col>
+    ));
+
+    return (
+      <Container>
+        <Row>
+          {tasksCards}
+        </Row>
+      </Container>
+    );
+  }
 };
 
-export default TasksView;
+export default connect(state => ({tasks: state.tasks}))(TasksView);
