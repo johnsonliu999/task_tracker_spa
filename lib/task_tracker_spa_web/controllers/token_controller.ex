@@ -1,10 +1,10 @@
 defmodule TaskTrackerSpaWeb.TokenController do
-  use TaskTrackerSpaWeb, :Controller
+  use TaskTrackerSpaWeb, :controller
   alias TaskTrackerSpa.Account.User
 
   action_fallback TaskTrackerSpaWeb.FallbackController
 
-  def create(conn, %{"email" => name, "password" => password}) do
+  def create(conn, %{"email" => email, "password" => password}) do
     with {:ok, %User{} = user} <- TaskTrackerSpa.Account.get_and_auth_user(email, password) do
       token = Phoenix.Token.sign(conn, "auth token", user.id)
       conn
@@ -12,5 +12,5 @@ defmodule TaskTrackerSpaWeb.TokenController do
       |> render("token.json", user: user, token: token)
     end
   end
-  
+
 end

@@ -48,7 +48,7 @@ defmodule TaskTrackerSpaWeb.Router do
     get "/users", PageController, :index
   end
 
-  scope "/api/v1/token", TaskTrackerSpa do
+  scope "/api/v1/token", TaskTrackerSpaWeb do
     pipe_through :token
     post "/", TokenController, :create
   end

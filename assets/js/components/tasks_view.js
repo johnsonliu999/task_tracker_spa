@@ -45,7 +45,8 @@ const Task = ({task}) => (
 class TasksView extends Component {
 
   componentDidMount() {
-    api.request_tasks();
+    console.log(this.props);
+    api.request_tasks(this.props.token);
   }
 
   render() {
@@ -63,4 +64,4 @@ class TasksView extends Component {
   }
 };
 
-export default connect(state => ({tasks: state.tasks}))(TasksView);
+export default connect(state => ({tasks: state.tasks, token: state.user.token}))(TasksView);
