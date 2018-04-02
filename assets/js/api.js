@@ -18,6 +18,25 @@ class Server {
       },
     });
   }
+
+  request_users(token) {
+    const url = "/api/v1/users?token=" + token;
+    $.ajax(url, {
+      method: "get",
+      data: {token},
+      dataType: "json",
+      contentType: "application/json; charset=UTF-8",
+      success: (resp) => {
+        console.log(resp);
+        store.dispatch({
+          type: RECEIVED_USERS,
+          tasks: resp.data,
+        });
+      },
+    });
+  }
+
+
 }
 
 export default new Server();

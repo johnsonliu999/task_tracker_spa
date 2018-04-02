@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Container, Row, Col, Card, CardHeader, CardBody, CardFooter, Table, Button} from 'reactstrap'
-import api from '../api'
+import api from '../api';
+import {FILL_FORM} from '../actions';
 
-const Task = ({task}) => (
+const Task = ({task, handleEdit}) => (
   <Card>
     <CardHeader>{task.title}</CardHeader>
     <CardBody>
@@ -31,7 +32,7 @@ const Task = ({task}) => (
     <CardFooter>
       <Row>
         <Col lg={{size: 3, offset: 2}}>
-          <Button color="primary">Edit</Button>
+          <Button color="primary" onClick={() => handleEdit(task)}>Edit</Button>
         </Col>
         <Col lg={{size: 3, offset: 2}}>
           <Button color="danger">Delete</Button>
@@ -49,9 +50,16 @@ class TasksView extends Component {
     api.request_tasks(this.props.token);
   }
 
+  handleEdit(task) {
+    this.props.dispatch({type:FILL_FORM, form:task});
+    this.props.history.push("/tasks/" + task.id + "/edit");
+  }
+
   render() {
     const tasksCards = this.props.tasks.map(task => (
-      <Col md="4" key={task.id}><Task task={task}/></Col>
+      <Col md="4" key={task.id}>
+        <Task task={task} handleEdit={this.handleEdit.bind(this)} />
+      </Col>
     ));
 
     return (

@@ -10,6 +10,8 @@ defmodule TaskTrackerSpaWeb.TokenController do
       conn
       |> put_status(:created)
       |> render("token.json", user: user, token: token)
+    else
+      {:error, _} -> conn |> send_resp(401, "Unauthorized")
     end
   end
 

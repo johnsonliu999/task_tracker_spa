@@ -10,7 +10,7 @@ defmodule TaskTrackerSpaWeb.Router do
     else
       {:error, _} ->
         conn
-        |> send_resp(403, "unauthorized")
+        |> send_resp(403, "Unauthorized")
         |> halt()
     end
   end
