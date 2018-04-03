@@ -7,9 +7,9 @@ import {Link, Route} from 'react-router-dom';
 import TaskEditView from './task_edit_view';
 
 const Task = ({task, handleEdit}) => (
-  <Card>
+  <Card style={{height: "600px"}} className="mb-3">
     <CardHeader>{task.title}</CardHeader>
-    <CardBody>
+    <CardBody style={{overflow: "auto"}}>
       <Table responsive>
         <tbody>
           <tr>
@@ -18,7 +18,7 @@ const Task = ({task, handleEdit}) => (
           </tr>
           <tr>
             <th scope="row">Desc</th>
-            <td style={{height: "400px", maxHeight: "400px"}}>{task.desc}</td>
+            <td>{task.desc}</td>
           </tr>
           <tr>
             <th scope="row">Time</th>
