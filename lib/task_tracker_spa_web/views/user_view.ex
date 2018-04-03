@@ -15,4 +15,6 @@ defmodule TaskTrackerSpaWeb.UserView do
       email: user.email,
     }
   end
+
+  def render("created_user.json", %{user: user}), do: user
 end

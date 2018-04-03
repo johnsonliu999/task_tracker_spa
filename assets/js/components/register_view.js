@@ -1,17 +1,18 @@
 import React, {Component} from 'react';
 import {Row, Col, Form, FormGroup, Label, Input, Button} from 'reactstrap'
-import {Redirect, Link} from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux'
 import {LOGIN_SUCCEED} from '../actions'
 import store from '../store'
 
-class LoginView extends Component {
+
+class RegisterView extends Component {
   constructor(props) {
     super(props);
     this.state = {
       email: "",
       password: "",
-      token: null
+      rePassword: "",
     }
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -19,22 +20,24 @@ class LoginView extends Component {
 
   handleSubmit(ev) {
     ev.preventDefault();
+    if (this.state.password !== this.state.rePassword) {
+      alert("Two passwords are not consistent");
+      return ;
+    }
     console.log(this.state);
-    $.ajax("/api/v1/public/token", {
+    const {email, password} = this.state;
+    $.ajax("/api/v1/public/users", {
       method: "post",
       dataType: "json",
       contentType: "application/json; charset=UTF-8",
-      data: JSON.stringify(this.state),
+      data: JSON.stringify({user: {email, password}}),
       success: (resp) => {
         console.log(resp);
-        this.setState({token: resp.token});
-        store.dispatch({
-          type: LOGIN_SUCCEED,
-          user: resp
-        });
+        alert("user created");
+        store.dispatch({type: LOGIN_SUCCEED, user: resp});
       },
       error: (xhr) => {
-        alert("login failed");
+        alert("create user failed");
       }
     });
   }
@@ -56,7 +59,6 @@ class LoginView extends Component {
                   id="email"
                   placeholder="Enter email"
                   onChange={ev => this.setState({email: ev.target.value})}
-                  required
                   />
               </Col>
             </FormGroup>
@@ -72,10 +74,19 @@ class LoginView extends Component {
                   />
               </Col>
             </FormGroup>
-            <center>
-              <Button color="primary" type="submit">Login</Button>
-              <Link to="/users/new" className="btn btn-default">Register</Link>
-            </center>
+            <FormGroup row>
+              <Label for="rePassword" sm={4}>Repeat</Label>
+              <Col sm={8}>
+                <Input type="password"
+                  value={this.state.rePassword}
+                  name="rePassword" id="rePassword"
+                  placeholder="Enter password"
+                  onChange={ev => this.setState({rePassword: ev.target.value})}
+                  required
+                  />
+              </Col>
+            </FormGroup>
+            <Button color="primary">Regiter</Button>
           </Form>
         </Col>
       </Row>
@@ -83,4 +94,4 @@ class LoginView extends Component {
   }
 };
 
-export default connect(state => ({token: state.user.token}))(LoginView);
+export default connect(state => ({token: state.user.token}))(RegisterView);

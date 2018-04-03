@@ -48,15 +48,17 @@ const TaskEditView = ({history, token, form, users, dispatch}) => {
   return (
     <Form onSubmit={submit_form}>
       <FormGroup>
-        <Label for="user_id">User</Label>
-        <Input type="select"
-          name="user_id"
-          value={form.user_id}
-          onChange={update}
-          required>
-          <option></option>
-          {userOps}
-        </Input>
+        <Label for="user_id" sm={2}>User</Label>
+        <Col sm={10}>
+          <Input type="select"
+            name="user_id"
+            value={form.user_id}
+            onChange={update}
+            required>
+            <option></option>
+            {userOps}
+          </Input>
+        </Col>
       </FormGroup>
       <FormGroup row>
         <Label for="title" sm={2}>Title</Label>

@@ -1,13 +1,13 @@
 import {combineReducers} from 'redux';
-import {LOGIN_SUCCEED, RECEIVED_TASKS, RECEIVED_USERS, FILL_FORM} from "./actions";
+import {LOGIN_SUCCEED, LOG_OUT, RECEIVED_TASKS, RECEIVED_USERS, FILL_FORM} from "./actions";
 import {UPDATE_FORM, EMPTY_FORM} from './actions';
 import deepFreeze from "deep-freeze";
 
 const initialState = {
   user: {
-    user_id: "",
-    user_email: "",
-    token: null,
+    id: "",
+    email: "",
+    token: "",
   },
   users: [],
   tasks: [
@@ -42,6 +42,8 @@ const user = (state = initialState.user, action) => {
   switch (action.type) {
     case LOGIN_SUCCEED:
       return action.user;
+    case LOG_OUT:
+      return initial.user;
     default:
       return state;
   }

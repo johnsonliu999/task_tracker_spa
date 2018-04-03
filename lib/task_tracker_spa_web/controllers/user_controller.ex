@@ -13,10 +13,11 @@ defmodule TaskTrackerSpaWeb.UserController do
 
   def create(conn, %{"user" => user_params}) do
     with {:ok, %User{} = user} <- Account.create_user(user_params) do
+      token = Phoenix.Token.sign(conn, "auth token", user.id)
       conn
       |> put_status(:created)
       |> put_resp_header("location", user_path(conn, :show, user))
-      |> render("show.json", user: user)
+      |> render("created_user.json", user: %{id: user.id, email: user.email, token: token})
     end
   end
 

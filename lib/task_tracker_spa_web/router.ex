@@ -30,7 +30,7 @@ defmodule TaskTrackerSpaWeb.Router do
     plug :authenticate
   end
 
-  pipeline :token do
+  pipeline :public_api do
     plug :accepts, ["json"]
   end
 
@@ -42,15 +42,16 @@ defmodule TaskTrackerSpaWeb.Router do
     get "/users", PageController, :index
   end
 
-  scope "/api/v1/token", TaskTrackerSpaWeb do
-    pipe_through :token
-    post "/", TokenController, :create
+  scope "/api/v1/public", TaskTrackerSpaWeb do
+    pipe_through :public_api
+    post "/token", TokenController, :create
+    post "/users", UserController, :create
   end
 
   # Other scopes may use custom stacks.
   scope "/api/v1", TaskTrackerSpaWeb do
     pipe_through :api
-    resources "/users", UserController, except: [:new, :edit]
+    resources "/users", UserController, except: [:new, :edit, :create]
     resources "/tasks", TaskController, except: [:new, :edit]
   end
 end

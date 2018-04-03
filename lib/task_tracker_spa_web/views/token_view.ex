@@ -3,8 +3,8 @@ defmodule TaskTrackerSpaWeb.TokenView do
 
   def render("token.json", %{user: user, token: token}) do
     %{
-      user_id: user.id,
-      user_email: user.email,
+      id: user.id,
+      email: user.email,
       token: token
     }
   end
