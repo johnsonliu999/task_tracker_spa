@@ -3,7 +3,7 @@ import {RECEIVED_TASKS, RECEIVED_USERS, FILL_FORM, LOGIN_SUCCEED} from "./action
 
 class Server {
   request_tasks(token) {
-    const url = "/api/v1/tasks?token=" + token;
+    const url = "/api/v1/tasks";
     $.ajax(url, {
       method: "get",
       data: {token},
@@ -20,7 +20,7 @@ class Server {
   }
 
   request_users(token) {
-    const url = "/api/v1/users?token=" + token;
+    const url = "/api/v1/users";
     $.ajax(url, {
       method: "get",
       data: {token},
@@ -30,7 +30,7 @@ class Server {
         console.log(resp);
         store.dispatch({
           type: RECEIVED_USERS,
-          tasks: resp.data,
+          users: resp.data,
         });
       },
     });

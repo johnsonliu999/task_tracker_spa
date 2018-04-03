@@ -37,6 +37,11 @@ defmodule TaskTrackerSpa.Tasks do
   """
   def get_task!(id), do: Repo.get!(Task, id)
 
+  def get_tasks_by_user_id(user_id) do
+    query = from t in Task, where: t.user_id == ^user_id
+    Repo.all(query)
+  end
+
   @doc """
   Creates a task.
 

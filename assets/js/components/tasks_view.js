@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Container, Row, Col, Card, CardHeader, CardBody, CardFooter, Table, Button} from 'reactstrap'
+import {Badge, Container, Row, Col, Card, CardHeader, CardBody, CardFooter, Table, Button} from 'reactstrap'
 import api from '../api';
-import {FILL_FORM} from '../actions';
+import {FILL_FORM, EMPTY_FORM} from '../actions';
+import {Link, Route} from 'react-router-dom';
+import TaskEditView from './task_edit_view';
 
 const Task = ({task, handleEdit}) => (
   <Card>
@@ -15,8 +17,8 @@ const Task = ({task, handleEdit}) => (
             <td>{task.title}</td>
           </tr>
           <tr>
-            <th scope="row">Description</th>
-            <td>{task.desc}</td>
+            <th scope="row">Desc</th>
+            <td style={{height: "400px", maxHeight: "400px"}}>{task.desc}</td>
           </tr>
           <tr>
             <th scope="row">Time</th>
@@ -24,7 +26,11 @@ const Task = ({task, handleEdit}) => (
           </tr>
           <tr>
             <th scope="row">Statue</th>
-            <td>{task.done}</td>
+            <td>
+              {task.done ?
+                <Badge color="success"> &radic; </Badge> :
+                  <Badge color="secondary"> &minus; </Badge>}
+            </td>
           </tr>
         </tbody>
       </Table>
@@ -48,6 +54,7 @@ class TasksView extends Component {
   componentDidMount() {
     console.log(this.props);
     api.request_tasks(this.props.token);
+    api.request_users(this.props.token);
   }
 
   handleEdit(task) {
@@ -66,6 +73,13 @@ class TasksView extends Component {
       <Container>
         <Row>
           {tasksCards}
+        </Row>
+        <Row>
+          <Link to="/tasks/new"
+            className="btn btn-primary mx-auto mt-3"
+            onClick={() => this.props.dispatch({type: EMPTY_FORM})}
+            >New Task</Link>
+
         </Row>
       </Container>
     );

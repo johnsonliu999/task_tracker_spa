@@ -2,14 +2,16 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Form, FormGroup, Label, Input, FormText, Button} from 'reactstrap';
 import {Col, Row} from 'reactstrap';
-import {UPDATE_FORM} from '../actions'
+import {UPDATE_FORM, CREATED_TASK, EMPTY_FORM} from '../actions'
 
-const TaskEditView = ({form, users, dispatch}) => {
+const TaskEditView = ({history, token, form, users, dispatch}) => {
   function update(ev) {
     let tgt = $(ev.target);
 
     let data = {};
-    data[tgt.attr('name')] = tgt.val();
+    console.log(tgt.type);
+    console.log(tgt.prop("checked"))
+    data[tgt.attr('name')] = (tgt.attr('name') == "done" ? tgt.prop('checked') : tgt.val());
     let action = {
       type: UPDATE_FORM,
       data: data,
@@ -18,15 +20,40 @@ const TaskEditView = ({form, users, dispatch}) => {
     dispatch(action);
   }
 
+  function submit_form(ev) {
+    ev.preventDefault();
+    console.log(form);
+    const url = "/api/v1/tasks/"+(form.id ? form.id : "");
+    console.log({task: form, token});
+    $.ajax(url, {
+      method: form.id ? "put" : "post",
+      data: JSON.stringify({task: form, token}),
+      dataType: "json",
+      contentType: "application/json; charset=UTF-8",
+      success: (resp) => {
+        console.log(resp);
+        dispatch({type: CREATED_TASK, task: resp.data});
+        dispatch({type: EMPTY_FORM});
+
+        history.push('/tasks');
+      },
+      error: xhr => alert("submission failed")
+    })
+  }
+
   const userOps = users.map(user => <option key={user.id} value={user.id}>{user.email}</option>);
+  console.log(form);
+  console.log(token);
+
   return (
-    <Form>
+    <Form onSubmit={submit_form}>
       <FormGroup>
         <Label for="user_id">User</Label>
         <Input type="select"
           name="user_id"
           value={form.user_id}
-          onChange={update}>
+          onChange={update}
+          required>
           <option></option>
           {userOps}
         </Input>
@@ -39,6 +66,7 @@ const TaskEditView = ({form, users, dispatch}) => {
             placeholder="Enter title"
             value={form.title}
             onChange={update}
+            required
             />
         </Col>
       </FormGroup>
@@ -51,6 +79,7 @@ const TaskEditView = ({form, users, dispatch}) => {
             placeholder="Enter description"
             value={form.desc}
             onChange={update}
+            required
             />
         </Col>
       </FormGroup>
@@ -63,6 +92,7 @@ const TaskEditView = ({form, users, dispatch}) => {
             min={0} placeholder={0} step={15}
             value={form.time}
             onChange={update}
+            required
             />
             <FormText color="muted">
               Only in 15-minute increments
@@ -75,15 +105,19 @@ const TaskEditView = ({form, users, dispatch}) => {
             <Input id="done"
               name="done"
               type="checkbox"
-              value={form.done}
+              checked={form.done}
               onChange={update}
               />
+          </Col>
+        </FormGroup>
+        <FormGroup row>
+          <Col sm={{size: 10, offset: 2}}>
+            <Button type="submit">Submit</Button>
           </Col>
         </FormGroup>
       </Form>
     );
   };
 
-const mapStateToProps = ({form, users}) => ({form, users});
-
+const mapStateToProps = ({user:{token}, form, users}) => ({token, form, users});
 export default connect(mapStateToProps)(TaskEditView);

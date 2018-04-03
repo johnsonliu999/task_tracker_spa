@@ -7,7 +7,8 @@ defmodule TaskTrackerSpaWeb.TaskController do
   action_fallback TaskTrackerSpaWeb.FallbackController
 
   def index(conn, _params) do
-    tasks = Tasks.list_tasks()
+    user_id = conn.assigns[:user_id]
+    tasks = Tasks.get_tasks_by_user_id(user_id)
     render(conn, "index.json", tasks: tasks)
   end
 

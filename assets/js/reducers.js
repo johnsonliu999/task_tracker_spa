@@ -1,11 +1,11 @@
 import {combineReducers} from 'redux';
 import {LOGIN_SUCCEED, RECEIVED_TASKS, RECEIVED_USERS, FILL_FORM} from "./actions";
-import {UPDATE_FORM} from './actions';
+import {UPDATE_FORM, EMPTY_FORM} from './actions';
 import deepFreeze from "deep-freeze";
 
 const initialState = {
   user: {
-    user_id: null,
+    user_id: "",
     user_email: "",
     token: null,
   },
@@ -15,7 +15,7 @@ const initialState = {
     {id: 2, title: "What", desc: "What Deck", time: 0, done: false, user_id: 2}
   ],
   hasFormLoaded: false,
-  form: {task_id: null, title: "", desc: "", time: 0, done: false, user_id: null}
+  form: {task_id: null, title: "", desc: "", time: 0, done: false, user_id: ""}
 };
 
 
@@ -31,6 +31,7 @@ const tasks = (state = initialState.tasks, action) => {
 const users = (state = initialState.users, action) => {
   switch (action.type) {
     case RECEIVED_USERS:
+      console.log(action);
       return action.users;
     default:
       return state;
@@ -53,6 +54,8 @@ const form = (state =  initialState.form, action) => {
     case UPDATE_FORM:
       console.log(action);
       return Object.assign({}, state, action.data);
+    case EMPTY_FORM:
+      return initialState.form;
     default:
       return state;
   }
