@@ -1,9 +1,11 @@
 import {Row, Col, Table} from 'reactstrap';
 import React from 'react';
 import {connect} from 'react-redux';
+import {Redirect} from 'react-router-dom';
 
-const UsersView = ({users}) => (
-  <Row>
+const UsersView = ({user, users}) =>
+(user.token ?
+  (<Row>
     <Col>
       <Table>
         <thead><tr><th>ID</th><th>Email</th></tr></thead>
@@ -17,7 +19,8 @@ const UsersView = ({users}) => (
         </tbody>
       </Table>
     </Col>
-  </Row>
+  </Row>) :
+  <Redirect to="/" />
 );
 
-export default connect( ({users}) => ({users}))(UsersView);
+export default connect( ({user, users}) => ({user, users}))(UsersView);

@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {Badge, Container, Row, Col, Card, CardHeader, CardBody, CardFooter, Table, Button} from 'reactstrap'
 import api from '../api';
 import {FILL_FORM, EMPTY_FORM} from '../actions';
-import {Link, Route} from 'react-router-dom';
+import {Link, Route, Redirect} from 'react-router-dom';
 import TaskEditView from './task_edit_view';
 
 const Task = ({task, handleEdit}) => (
@@ -69,7 +69,7 @@ class TasksView extends Component {
       </Col>
     ));
 
-    return (
+    return this.props.user.token ? (
       <Container>
         <Row>
           {tasksCards}
@@ -79,11 +79,10 @@ class TasksView extends Component {
             className="btn btn-primary mx-auto mt-3"
             onClick={() => this.props.dispatch({type: EMPTY_FORM})}
             >New Task</Link>
-
         </Row>
       </Container>
-    );
+    ) : <Redirect to="/" />;
   }
 };
 
-export default connect(state => ({tasks: state.tasks, token: state.user.token}))(TasksView);
+export default connect(({user, tasks}) => ({user, tasks}))(TasksView);
