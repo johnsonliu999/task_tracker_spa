@@ -6,7 +6,7 @@ import {FILL_FORM, EMPTY_FORM} from '../actions';
 import {Link, Route, Redirect} from 'react-router-dom';
 import TaskEditView from './task_edit_view';
 
-const Task = ({task, handleEdit}) => (
+const Task = ({task, handleEdit, handleDelete}) => (
   <Card style={{height: "600px"}} className="mb-3">
     <CardHeader>{task.title}</CardHeader>
     <CardBody style={{overflow: "auto"}}>
@@ -37,13 +37,13 @@ const Task = ({task, handleEdit}) => (
     </CardBody>
     <CardFooter>
       <Row>
-        <Col lg={{size: 3, offset: 2}}>
+        <Col sm={{size: 3, offset: 2}}>
           <Button color="primary" onClick={() => handleEdit(task)}>Edit</Button>
         </Col>
-        <Col lg={{size: 3, offset: 2}}>
-          <Button color="danger">Delete</Button>
+        <Col sm={{size: 3, offset: 2}}>
+          <Button color="danger" onClick={() => handleDelete(task.id)}>Delete</Button>
         </Col>
-        <Col lg="2"></Col>
+        <Col sm="2"></Col>
       </Row>
     </CardFooter>
   </Card>
@@ -53,8 +53,8 @@ class TasksView extends Component {
 
   componentDidMount() {
     console.log(this.props);
-    api.request_tasks(this.props.token);
-    api.request_users(this.props.token);
+    api.request_tasks(this.props.user.token);
+    api.request_users(this.props.user.token);
   }
 
   handleEdit(task) {
@@ -62,10 +62,27 @@ class TasksView extends Component {
     this.props.history.push("/tasks/" + task.id + "/edit");
   }
 
+  handleDelete(id) {
+    const url = "/api/v1/tasks/" + id;
+    console.log("handle delete" + url);
+    const token = this.props.user.token;
+    $.ajax(url, {
+      method: "delete",
+      data: {token},
+      success: resp => {
+        console.log(resp);
+        api.request_tasks(token);
+      },
+      error: xhr => alert("delete error")
+    });
+  }
+
   render() {
     const tasksCards = this.props.tasks.map(task => (
       <Col md="4" key={task.id}>
-        <Task task={task} handleEdit={this.handleEdit.bind(this)} />
+        <Task task={task}
+          handleEdit={this.handleEdit.bind(this)}
+          handleDelete={this.handleDelete.bind(this)} />
       </Col>
     ));
 

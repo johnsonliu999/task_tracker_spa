@@ -3,6 +3,7 @@ import {RECEIVED_TASKS, RECEIVED_USERS, FILL_FORM, LOGIN_SUCCEED} from "./action
 
 class Server {
   request_tasks(token) {
+    console.log("what wired world", token)
     const url = "/api/v1/tasks";
     $.ajax(url, {
       method: "get",
@@ -21,6 +22,7 @@ class Server {
 
   request_users(token) {
     const url = "/api/v1/users";
+    console.log("what users", token);
     $.ajax(url, {
       method: "get",
       data: {token},

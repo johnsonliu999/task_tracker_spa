@@ -10,10 +10,7 @@ const initialState = {
     token: "",
   },
   users: [],
-  tasks: [
-    {id: 1, title: "Hello", desc: "Hello World", time: 12, done: true, user_id: 1},
-    {id: 2, title: "What", desc: "What Deck", time: 0, done: false, user_id: 2}
-  ],
+  tasks: [],
   hasFormLoaded: false,
   form: {task_id: null, title: "", desc: "", time: 0, done: false, user_id: ""}
 };

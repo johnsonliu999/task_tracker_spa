@@ -4,11 +4,12 @@ defmodule TaskTrackerSpaWeb.Router do
 
   def authenticate(%{halted: true} = conn, _), do: conn
   def authenticate(conn, _) do
+    inspect conn.assigns["token"]
     with {:ok, token} <- conn.params |> Map.fetch("token"),
         {:ok, user_id} <- Phoenix.Token.verify(conn, "auth token", token, max_age: 86400) do
       assign(conn, :user_id, user_id)
     else
-      {:error, _} ->
+       _ ->
         conn
         |> send_resp(403, "Unauthorized")
         |> halt()

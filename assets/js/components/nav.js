@@ -7,7 +7,8 @@ import {LOG_OUT} from '../actions'
 
 const MyNav = ({user, dispatch}) => (
   <Navbar color="faded" expand="sm" light>
-    <NavbarBrand><h3>Task Tracker</h3></NavbarBrand>
+    <Link to="/" className="navbar-brand"><h3>Task Tracker</h3></Link>
+    {user.token ?
     <Nav className="navbar-expand-sm" navbar>
       <NavItem>
         <NavLink to="/users" className="nav-link">&nbsp; Users &nbsp;</NavLink>
@@ -15,7 +16,7 @@ const MyNav = ({user, dispatch}) => (
       <NavItem>
         <NavLink to="/tasks" className="nav-link">&nbsp; Tasks &nbsp;</NavLink>
       </NavItem>
-    </Nav>
+    </Nav> : ""}
     {user.token ?
       <div className="navbar-text ml-auto">Hi, <strong>{user.email}</strong>
       &nbsp; <Link to="/" onClick={() => dispatch({type: LOG_OUT})}>Log out</Link>
